@@ -17,30 +17,26 @@
 <body>
 
   <div class="container">
-
     <div class="row">
       <div class="col-lg-12">
 
         <div>
             <h2>Survey Questions</h2>
         </div>
-
         <hr>
-
         <div>
             <h3>About You</h3>
         </div>
 
-
-        <form role="form">
+        <form data-toggle="validator" role="form">
 
             <div class="form-group">
                 <label for="name"><h4>Name (Required)</h4></label>
-                <input type="text" class="form-control" id="name">
+                <input type="text" class="form-control" id="name" required>
             </div>
             <div class="form-group">
                 <label for="photo"><h4>Link to Photo Image (Required)</h4></label>
-                <input type="text" class="form-control" id="photo">
+                <input type="text" class="form-control" id="photo" required>
             </div>
 
             <hr>
@@ -52,7 +48,7 @@
                 </label>
                 <div class="row">
                     <div class="col-md-2">  
-                        <select class="form-control" id="q1">
+                        <select class="form-control" id="q1" required>
                             <option value="" selected disabled>Select an Option</option>
                             <option value=5>Strongly Agree</option>
                             <option value=4>Agree</option>
@@ -71,7 +67,7 @@
                 </label>
                 <div class="row">
                     <div class="col-md-2">  
-                        <select class="form-control" id="q2">
+                        <select class="form-control" id="q2" required>
                             <option value="" selected disabled>Select an Option</option>
                             <option value=5>Strongly Agree</option>
                             <option value=4>Agree</option>
@@ -90,7 +86,7 @@
                 </label>
                 <div class="row">
                     <div class="col-md-2">  
-                        <select class="form-control" id="q3">
+                        <select class="form-control" id="q3" required>
                             <option value="" selected disabled>Select an Option</option>
                             <option value=5>Strongly Agree</option>
                             <option value=4>Agree</option>
@@ -109,7 +105,7 @@
                 </label>
                 <div class="row">
                     <div class="col-md-2">  
-                        <select class="form-control" id="q4">
+                        <select class="form-control" id="q4" required>
                             <option value="" selected disabled>Select an Option</option>
                             <option value=5>Strongly Agree</option>
                             <option value=4>Agree</option>
@@ -128,7 +124,7 @@
                 </label>
                 <div class="row">
                     <div class="col-md-2">  
-                        <select class="form-control" id="q5">
+                        <select class="form-control" id="q5" required>
                             <option value="" selected disabled>Select an Option</option>
                             <option value=5>Strongly Agree</option>
                             <option value=4>Agree</option>
@@ -147,7 +143,7 @@
                 </label>
                 <div class="row">
                     <div class="col-md-2">  
-                        <select class="form-control" id="q6">
+                        <select class="form-control" id="q6" required>
                             <option value="" selected disabled>Select an Option</option>
                             <option value=5>Strongly Agree</option>
                             <option value=4>Agree</option>
@@ -166,7 +162,7 @@
                 </label>
                 <div class="row">
                     <div class="col-md-2">  
-                        <select class="form-control" id="q7">
+                        <select class="form-control" id="q7" required>
                             <option value="" selected disabled>Select an Option</option>
                             <option value=5>Strongly Agree</option>
                             <option value=4>Agree</option>
@@ -185,7 +181,7 @@
                 </label>
                 <div class="row">
                     <div class="col-md-2">  
-                        <select class="form-control" id="q8">
+                        <select class="form-control" id="q8" required>
                             <option value="" selected disabled>Select an Option</option>
                             <option value=5>Strongly Agree</option>
                             <option value=4>Agree</option>
@@ -204,7 +200,7 @@
                 </label>
                 <div class="row">
                     <div class="col-md-2">  
-                        <select class="form-control" id="q9">
+                        <select class="form-control" id="q9" required>
                             <option value="" selected disabled>Select an Option</option>
                             <option value=5>Strongly Agree</option>
                             <option value=4>Agree</option>
@@ -223,7 +219,7 @@
                 </label>
                 <div class="row">
                     <div class="col-md-2">  
-                        <select class="form-control" id="q10">
+                        <select class="form-control" id="q10" required>
                             <option value="" selected disabled>Select an Option</option>
                             <option value=5>Strongly Agree</option>
                             <option value=4>Agree</option>
@@ -235,15 +231,14 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary submit" id="submit-btn">Submit</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
 
         </form>
 
-
-
       </div>
     </div>
-
   </div>
 
 </body>
@@ -316,27 +311,27 @@
                 ]
         };
 
-      console.log(newUser);
+        console.log(newUser);
 
-      // This line is the magic. It"s very similar to the standard ajax function we used.
-      // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
-      // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
-      // depending on if a tables is available or not.
+        // This line is the magic. It"s very similar to the standard ajax function we used.
+        // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
+        // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
+        // depending on if a tables is available or not.
 
-      $.post("/api/friends", newUser,
-        function(data) {
+        $.post("/api/friends", newUser,
+            function(data) {
 
-        //   // If a table is available... tell user they are booked.
-        //   if (data) {
-        //     alert("Yay! You are officially booked!");
-        //   }
+            //   // If a table is available... tell user they are booked.
+            //   if (data) {
+            //     alert("Yay! You are officially booked!");
+            //   }
 
-        //   // If a table is available... tell user they on the waiting list.
-        //   else {
-        //     alert("Sorry you are on the wait list");
-        //   }
+            //   // If a table is available... tell user they on the waiting list.
+            //   else {
+            //     alert("Sorry you are on the wait list");
+            //   }
 
-        });
+            });
 
         // Clear the form when submitting
         $("#name").val("");
