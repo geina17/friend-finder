@@ -1,52 +1,69 @@
-// ===============================================================================
-// LOAD DATA
-// We are linking our routes to a series of "data" sources.
-// These data sources hold arrays of information on table-data, waitinglist, etc.
-// ===============================================================================
-
+// DEPENDENCIES
+var express = require('express');
+var bodyParser = require('body-parser');
 var friendsData = require("../data/friends");
 var path = require("path");
 
-// ===============================================================================
-// ROUTING
-// ===============================================================================
+var app = express();
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// API GET Requests
 module.exports = function(app) {
-  // API GET Requests
-  // Below code handles when users "visit" a page.
-  // In each of the below cases when a user visits a link
-  // (ex: localhost:PORT/api/admin... they are shown a JSON of the data in the table)
-  // ---------------------------------------------------------------------------
+    app.get("/api/friends", function(req, res) {
+        res.json(friendsData);
+    });
 
-  app.get("/api/friends", function(req, res) {
-    res.json(friendsData);
-  });
+    // API POST Requests
+    app.post('/api/friends', function(req, res) {
+        console.log(req.body)
+        
+        var newUserData = req.body;
+        var differences = [];
 
-  // API POST Requests
-  // Below code handles when a user submits a form and thus submits data to the server.
-  // In each of the below cases, when a user submits form data (a JSON object)
-  // ...the JSON is pushed to the appropriate JavaScript array
-  // (ex. User fills out a reservation request... this data is then sent to the server...
-  // Then the server saves the data to the tableData array)
-  // ---------------------------------------------------------------------------
+        // Compare new user responses to potential friends
+        friendsData.forEach(function(user) {
+            var totalDifference = 0;
 
-  app.post("/api/friends", function(req, res) {
-    // Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
-    // It will do this by sending out the value "true" have a table
-    // req.body is available since we're using the body-parser middleware
-      friendsData.push(req.body);
-      res.json(true);
-  });
+            // Get the total score difference
+            for (var i = 0; i < newUserData['scores'].length; i++) {
+                var otherAnswer = user['scores'][i];
+                var thisAnswer = newUserData['scores'][i];
+                var difference = +otherAnswer - +thisAnswer;
+                totalDifference += Math.abs(difference);
+            }
 
-  // ---------------------------------------------------------------------------
-  // I added this below code so you could clear out the table while working with the functionality.
-  // Don"t worry about it!
+            // Push differences of each survey to array
+            differences.push(totalDifference);
+        });
 
+        // Find the minimum difference score
+        var minimumDifference = Math.min.apply(null, differences);
+
+        // Create an array for scores with minimum difference
+        var bestMatches = [];
+
+        // Add friends with minimum score differences to best matches array
+        for (var i = 0; i < differences.length; i++) {
+            if (differences[i] === minimumDifference) {
+                bestMatches.push(friendsData[i]);
+            }
+        }
+
+        // Display the first friend in best matches array
+        res.json(bestMatches[0]);
+
+        // Add new user to friends data
+        friendsData.push(newUserData);
+
+    });
+}
+
+// Clear table
 //   app.post("/api/clear", function() {
 //     // Empty out the arrays of data
-//     tableData = [];
-//     waitListData = [];
+//     friendsData = [];
 
-//     console.log(tableData);
+//     console.log(friendsData);
 //   });
-};

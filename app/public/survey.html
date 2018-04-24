@@ -4,14 +4,10 @@
   <meta charset="UTF-8">
   <title>Survey Page</title>
 
-  <!-- Latest compiled and minified CSS & JS -->
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
-
+  <!-- JQuery, Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
 <body>
@@ -20,6 +16,7 @@
     <div class="row">
       <div class="col-lg-12">
 
+        <!-- Survey Title --> 
         <div>
             <h2>Survey Questions</h2>
         </div>
@@ -28,6 +25,7 @@
             <h3>About You</h3>
         </div>
 
+        <!-- Survey Questions -->
         <form data-toggle="validator" role="form">
 
             <div class="form-group">
@@ -231,8 +229,9 @@
                 </div>
             </div>
 
+            <!-- Submit Button -->
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>
             </div>
 
         </form>
@@ -241,59 +240,46 @@
     </div>
   </div>
 
+  <!-- Match Results Modal -->
+  <div id="results-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Your Match:</h4>
+            </div>
+            <div class="modal-body">
+                <h3 class="text-center" id="match-name"></h3>
+                <img class="center-block" width="300px" id="match-img" src="" alt="">
+                <br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>            
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
 </body>
 </html>
 
-<!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
+
+
+<!-- SEND DATA TO SERVER -->
 <script type="text/javascript">
 
+    // Displays answer choice when clicked
     $(".dropdown-menu li a").click(function(){
         $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
         $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
     });
 
-    function updateManufacturerIdSelect(val) {
-        console.log('updateManufacturerIdSelect: ' + val);
-    }
-
-    $(".dropdown-menu li a").click(function () {
-        var selText = $(this).text();
-        $(this).closest('.btn-group').find('.btn').html(selText + ' <span class="caret"></span>');
-        updateManufacturerIdSelect($(this).closest('li').data('value'));
-    });
-
-// https://stackoverflow.com/questions/43294807/reset-bootstrap-dropdown-button-value-on-click?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-    // $('.dropdown-menu li').on('click', function(e) {
-    //     $('.dropdown-toggle').contents().filter(function(idx, ele) {
-    //         return ele.nodeType == Node.TEXT_NODE && ele.textContent.trim().length != 0
-    //     }).get(0).textContent = ' ' + this.textContent.trim() + ' ';
-    // });
-
-    // $('#submit-btn').on('click', function(e) {
-    //     if ($(this).attr('defValue') == undefined) {
-    //         $(this).attr('defValue', ' ' + $('.dropdown-toggle').contents().get(2).textContent + ' ');
-    //     } else {
-    //         $('.dropdown-toggle').contents().get(2).textContent = ' ' + $(this).attr('defValue') + ' ';
-    //     }
-    // }).trigger('click');
-
-
-    // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
-    // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
-    // Our api recognizes the route (/api/tables)... and then runs the associated code (found in api-routes.js).
-    // In this case the associated code "saves" the data to the table-data.js file or waitinglist-data.js file
-
+    // Input submission
     $("#submit-btn").on("click", function(event) {
         event.preventDefault();
 
-        // if ($(this).attr('defValue') == undefined) {
-        //     $(this).attr('defValue', ' ' + $('.dropdown-toggle').contents().get(2).textContent + ' ');
-        // } else {
-        //     $('.dropdown-toggle').contents().get(2).textContent = ' ' + $(this).attr('defValue') + ' ';
-        // }
-
-        // Here we grab the form elements
-        var newUser = {
+        // Grab the form elements
+        var newUserData = {
             name: $('#name').val().trim(),
             photo: $('#photo').val().trim(),
             scores: 
@@ -310,30 +296,21 @@
                     $('#q10').val()
                 ]
         };
+        console.log(newUserData);
 
-        console.log(newUser);
-
-        // This line is the magic. It"s very similar to the standard ajax function we used.
-        // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
-        // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
-        // depending on if a tables is available or not.
-
-        $.post("/api/friends", newUser,
+        // Display modal
+        $.post("/api/friends", newUserData,
             function(data) {
 
-            //   // If a table is available... tell user they are booked.
-            //   if (data) {
-            //     alert("Yay! You are officially booked!");
-            //   }
+                console.log(data);
+                $('#match-name').text(data.name);
+                $('#match-img').attr('src', data.photo);
+                $('#results-modal').modal('toggle');
 
-            //   // If a table is available... tell user they on the waiting list.
-            //   else {
-            //     alert("Sorry you are on the wait list");
-            //   }
+            }
+        );
 
-            });
-
-        // Clear the form when submitting
+        // Clear the form
         $("#name").val("");
         $("#photo").val("");
 
