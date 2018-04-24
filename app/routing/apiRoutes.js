@@ -23,14 +23,14 @@ module.exports = function(app) {
         var differences = [];
 
         // Compare new user responses to potential friends
-        friendsData.forEach(function(user) {
+        friendsData.forEach(function(friends) {
             var totalDifference = 0;
 
             // Get the total score difference
             for (var i = 0; i < newUserData['scores'].length; i++) {
-                var otherAnswer = user['scores'][i];
-                var thisAnswer = newUserData['scores'][i];
-                var difference = +otherAnswer - +thisAnswer;
+                var friendsAnswer = friends['scores'][i];
+                var newUserAnswer = newUserData['scores'][i];
+                var difference = friendsAnswer - newUserAnswer;
                 totalDifference += Math.abs(difference);
             }
 
@@ -60,7 +60,7 @@ module.exports = function(app) {
     });
 }
 
-// Clear table
+// Clear data
 //   app.post("/api/clear", function() {
 //     // Empty out the arrays of data
 //     friendsData = [];
