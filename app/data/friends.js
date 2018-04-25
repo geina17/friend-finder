@@ -15,7 +15,6 @@ var friendsData = [
             "2",
             "5"
         ]
-    // }
     },
     {
         "name":"Jim Halpert",
