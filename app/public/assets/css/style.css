@@ -1,0 +1,27 @@
+/*********************
+MAIN
+*********************/
+
+.jumbotron {
+    background-image: url("fish.jpg");
+    margin-bottom: 0;
+    min-height: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+    -webkit-background-size: cover;
+    background-size: cover;
+    color: #fff;
+    padding-bottom: 150px;
+}
+
+#title {
+    margin-top: 10%;
+    font-size: 4em;
+}
+
+.instructions {
+    font-size: 1.5em;
+    letter-spacing: 1px;
+    font-family: 'Lato', sans-serif;
+    /* font-family: 'Lato', sans-serif; */
+}
