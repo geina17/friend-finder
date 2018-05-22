@@ -1,6 +1,6 @@
 # FriendFinder
 
-# [LIVE DEMO](https://obscure-bayou-49883.herokuapp.com/)
+# [LIVE DEMO](https://friend-finder-18.herokuapp.com/)
 
 This is a compatibility-based "FriendFinder" application built with Node.js and uses Express to handle routing. This full-stack site will take in results from users' surveys, then compare their answers with those from other users.
 
